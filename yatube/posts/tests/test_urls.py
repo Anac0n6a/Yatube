@@ -36,6 +36,7 @@ class StaticURLTests(TestCase):
             f'/posts/{cls.post.pk}/': 'posts/post_detail.html',
             f'/posts/{cls.post.pk}/edit/': 'posts/post_create.html',
             '/create/': 'posts/post_create.html',
+            '/follow/': 'posts/follow.html'
         }
 
     def setUp(self):
@@ -52,6 +53,18 @@ class StaticURLTests(TestCase):
             with self.subTest(address=address):
                 response = self.guest_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_page_display_for_follow(self):
+        '''Проверка что стр подписок не открываются для гостей'''
+        url_list = [
+            '/follow/',
+            f'/profile/{self.user}/follow/',
+            f'/profile/{self.user}/unfollow/',
+        ]
+        for address in url_list:
+            with self.subTest(address=address):
+                response = self.guest_client.get(address)
+                self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_post_edit_available_only_author(self):
         '''Проверка что страница редактирования, достпна только автору поста'''

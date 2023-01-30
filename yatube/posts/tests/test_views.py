@@ -183,6 +183,7 @@ class TestView(TestCase):
     def test_follow_auth_user_is_corrected(self):
         '''Проверка авторизованный пользователь
         может подписываться на других и удалять их из подписок'''
+        follow_count = Follow.objects.count()
         # Стр изранных пустая
         r_0 = self.user_auntificated.get(reverse('posts:follow_index'))
         self.assertEqual(len(r_0.context['page_obj']), 0)
@@ -191,6 +192,8 @@ class TestView(TestCase):
         response = self.user_auntificated.get(
             reverse('posts:follow_index')
         )
+        # Проверка обработки подписки
+        self.assertEqual(Follow.objects.count(), follow_count + 1)
         # Проверка что избранное не показывается у другого пользователя
         user23 = User.objects.create(username="BezImeni")
         self.user_auntificated.force_login(user23)
@@ -203,6 +206,7 @@ class TestView(TestCase):
             reverse('posts:follow_index')
         )
         self.assertEqual(len(response2.context['page_obj']), 0)
+        self.assertEqual(Follow.objects.count(), follow_count)
         # Проврка что гостя перенаправляет на стр авторизации
         response3 = self.quest_user.get(reverse('posts:follow_index'))
         self.assertEqual(response3.status_code, 302)

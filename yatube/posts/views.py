@@ -49,7 +49,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post_obj = get_object_or_404(Post, pk=post_id)
-    form = CommentForm(request.POST or None)
+    form = CommentForm()
     comments = Comment.objects.filter(post=post_obj)
     context = {
         'post_obj': post_obj,
