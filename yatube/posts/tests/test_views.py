@@ -52,6 +52,9 @@ class TestView(TestCase):
         self.user_auntificated = Client()
         self.user_auntificated.force_login(self.user)
         self.quest_user = Client()
+        user2 = User.objects.create(username='NewUser')
+        self.new_user_auntificated = Client()
+        self.new_user_auntificated.force_login(user2)
 
     def test_template_is_ok(self):
         '''проверка соответсивю шаблонов для view функций'''
@@ -210,6 +213,18 @@ class TestView(TestCase):
         # Проврка что гостя перенаправляет на стр авторизации
         response3 = self.quest_user.get(reverse('posts:follow_index'))
         self.assertEqual(response3.status_code, 302)
+
+    def test_follow_is_corrected(self):
+        # Проверка url поподписке
+        self.new_user_auntificated.get(reverse(
+            'posts:profile_follow', kwargs={'username': self.post.author}
+        ))
+        self.assertEqual(Follow.objects.count(), 1)
+        # проверка url по отписке
+        self.new_user_auntificated.get(reverse(
+            'posts:profile_unfollow', kwargs={'username': self.post.author}
+        ))
+        self.assertEqual(Follow.objects.count(), 0)
 
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
