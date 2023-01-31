@@ -215,6 +215,8 @@ class TestView(TestCase):
         self.assertEqual(response3.status_code, 302)
 
     def test_follow_is_corrected(self):
+        '''Проверка подписки/отписки по url'''
+        # Пробовал их раделить но не получается
         # Проверка url поподписке
         self.new_user_auntificated.get(reverse(
             'posts:profile_follow', kwargs={'username': self.post.author}
