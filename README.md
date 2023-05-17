@@ -1,3 +1,20 @@
-# hw05_final
+# Yatube 
+### Описание
+Эта социальная сеть, где каждый может стать блогером и следить за другими людьми которые вам понравились.
+### Технологии проекта
+- python 3.9.10
+- Django 2.2.19
+- SQLite3
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+### Запуск проекта в dev-режиме
+- Установите и активируйте виртуальное окружение
+- Установите зависимости из файла requirements.txt
+```
+pip install -r requirements.txt
+``` 
+- В папке с файлом manage.py выполните команду:
+```
+python3 manage.py runserver
+```
+### Автор
+Tim©
